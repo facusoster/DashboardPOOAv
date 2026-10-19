@@ -1,0 +1,19 @@
+# Java
+target/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Logs
+logs/
+
+# DB futura
+*.db
+*.sqlite
+
+# OS
+.DS_Store
+Thumbs.db
+``
