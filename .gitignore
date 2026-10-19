@@ -1,4 +1,4 @@
-# Java
+# Maven
 target/
 
 # IDEs
@@ -9,11 +9,13 @@ target/
 # Logs
 logs/
 
-# DB futura
+# BBDD
 *.db
 *.sqlite
 
-# OS
+# Archivos comprimidos
+*.zip
+
+# SO
 .DS_Store
 Thumbs.db
-``
