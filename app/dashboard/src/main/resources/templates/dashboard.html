@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
+    <meta charset="UTF-8">
     <title>Dashboard</title>
 </head>
+
 <body>
 
-<h1 th:text="${titulo}"></h1>
+    <h1>Dashboard de Monitoreo</h1>
 
-<p th:text="${descripcion}"></p>
+    <hr>
 
-
+    <p>
+        Aplicaciones registradas:
+        <strong th:text="${applicationsCount}"></strong>
+    </p>
 
 </body>
+
 </html>
