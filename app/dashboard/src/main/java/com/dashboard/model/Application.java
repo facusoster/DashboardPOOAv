@@ -33,7 +33,4 @@ public class Application {
     @Column(nullable = false)
     private Boolean activo;
 
-    @ManyToOne
-    @JoinColumn(name = "script_id")
-    private Script script;
 }

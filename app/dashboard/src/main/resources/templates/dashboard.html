@@ -8,6 +8,9 @@
 
 <body>
 
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+
     <h1>Dashboard de Monitoreo</h1>
 
     <hr>
@@ -15,6 +18,11 @@
     <p>
         Aplicaciones registradas:
         <strong th:text="${applicationsCount}"></strong>
+    </p>
+
+    <p>
+        Ejecuciones registradas:
+        <strong th:text="${executionsCount}"></strong>
     </p>
 
 </body>

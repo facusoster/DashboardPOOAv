@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Aplicación</title>
+</head>
+
+<body>
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <h1>Detalle Aplicación</h1>
+
+    <p>ID:
+        <span th:text="${monitoredApplication.id}"></span>
+    </p>
+
+    <p>Nombre:
+        <span th:text="${monitoredApplication.nombre}"></span>
+    </p>
+
+    <p>URL:
+        <span th:text="${monitoredApplication.url}"></span>
+    </p>
+
+    <p>Tipo:
+        <span th:text="${monitoredApplication.tipo}"></span>
+    </p>
+
+    <p>Activo:
+        <span th:text="${monitoredApplication.activo}"></span>
+    </p>
+
+    <a th:href="@{/applications}">Volver</a>
+
+    <a th:href="@{/applications/edit/{id}(id=${monitoredApplication.id})}">
+        Editar
+    </a>
+
+</body>
+
+</html>

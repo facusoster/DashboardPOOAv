@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aplicaciones</title>
+</head>
+
+<body>
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <h1>Aplicaciones Monitoreadas</h1>
+
+    <a href="/applications/new">
+        Nueva aplicación
+    </a>
+
+    <hr>
+
+
+    <table border="1">
+
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>URL</th>
+            <th>Tipo</th>
+            <th>Acciones</th>
+        </tr>
+
+        <tr th:each="app : ${applications}">
+
+            <td th:text="${app.id}"></td>
+            <td th:text="${app.nombre}"></td>
+            <td th:text="${app.url}"></td>
+            <td th:text="${app.tipo}"></td>
+
+            <td>
+                <a th:href="@{/applications/{id}(id=${app.id})}">
+                    Ver
+                </a>
+
+                |
+
+                <a th:href="@{/applications/edit/{id}(id=${app.id})}">
+                    Editar
+                </a>
+
+                |
+
+                <form th:action="@{/applications/deactivate/{id}(id=${app.id})}" method="post" style="display:inline;"
+                    th:if="${app.activo}">
+
+                    <button type="submit" onclick="return confirm('¿Desactivar esta aplicación?');">
+                        Desactivar
+                    </button>
+
+                </form>
+            </td>
+
+        </tr>
+
+    </table>
+
+
+</body>
+
+</html>

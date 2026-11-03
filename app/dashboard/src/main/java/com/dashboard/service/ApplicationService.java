@@ -23,6 +23,19 @@ public class ApplicationService {
         return repository.save(application);
     }
 
+    public Application findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(()
+                        -> new RuntimeException(
+                                "No se encontró la aplicación con ID: " + id));
+    }
+
+    public void deactivate(Long id) {
+        Application application = findById(id);
+        application.setActivo(false);
+        repository.save(application);
+    }
+
     public long count() {
         return repository.count();
     }
