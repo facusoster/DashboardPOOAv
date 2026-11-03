@@ -33,8 +33,9 @@ public class Execution {
     @Column(nullable = false)
     private Integer durationMs;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private ExecutionStatus status;
 
     @Column(nullable = false)
     private Integer total;

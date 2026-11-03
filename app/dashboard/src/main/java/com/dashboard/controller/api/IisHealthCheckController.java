@@ -1,4 +1,4 @@
-package com.dashboard.controller;
+package com.dashboard.controller.api;
 
 import com.dashboard.dto.IisHealthCheckDTO;
 import com.dashboard.service.HealthCheckService;

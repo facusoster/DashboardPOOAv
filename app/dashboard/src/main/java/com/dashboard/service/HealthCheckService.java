@@ -1,7 +1,9 @@
 package com.dashboard.service;
 
+import com.dashboard.bridge.HealthCheckProcessor;
 import com.dashboard.dto.IisHealthCheckDTO;
 import com.dashboard.model.Execution;
+import com.dashboard.model.ExecutionStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +17,14 @@ public class HealthCheckService {
 
     private final ExecutionService executionService;
 
-    public void process(IisHealthCheckDTO dto) {
+    private final HealthCheckProcessor processor;
+
+        public void process(IisHealthCheckDTO dto) {
+
+        ExecutionStatus finalStatus =
+                processor.calculateFinalStatus(
+                        dto,
+                        1000);
 
         Execution execution = Execution.builder()
                 .executionId(dto.getExecutionId())
@@ -33,24 +42,26 @@ public class HealthCheckService {
                 .durationMs(
                         dto.getExecution()
                                 .getDurationMs())
-                .status(
-                        dto.getSummary()
-                                .getStatus())
+                .status(finalStatus)
                 .total(
                         dto.getSummary()
                                 .getTotal())
-                .okCount(
-                        dto.getSummary()
-                                .getOK())
-                .failCount(
-                        dto.getSummary()
-                                .getFAIL())
-                .build();
+                    .okCount(
+                            dto.getSummary()
+                                    .getOK())
+                    .failCount(
+                            dto.getSummary()
+                                    .getFAIL())
+                    .build();
 
-        executionService.save(execution);
+            executionService.save(execution);
 
-        System.out.println(
-                "Execution guardada: "
-                        + dto.getExecutionId());
-    }
+            System.out.println(
+            "Execution guardada: "
+                            + dto.getExecutionId());
+
+            System.out.println(
+                    "Estado final calculado: "
+                            + finalStatus);
+        }
 }
