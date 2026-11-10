@@ -45,7 +45,11 @@ public class ApplicationImportService {
                             .descripcion(dto.getDescription())
                             .criticality(dto.getCriticality())
                             .tipo("IIS")
-                            .umbralRespuestaMs(1000)
+                            .umbralRespuestaMs(
+                                    dto.getTimeoutSeconds() != null
+                                            ? dto.getTimeoutSeconds() * 1000
+                                            : 1000
+                            )
                             .activo(
                                     dto.getEnabled() != null
                                             ? dto.getEnabled()

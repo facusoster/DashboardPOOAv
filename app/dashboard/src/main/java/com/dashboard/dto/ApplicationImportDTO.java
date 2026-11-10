@@ -11,5 +11,6 @@ public class ApplicationImportDTO {
     private String Description;
     private String Criticality;
     private Boolean Enabled;
+    private Integer TimeoutSeconds;
 
 }

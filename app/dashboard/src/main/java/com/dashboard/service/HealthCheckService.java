@@ -24,26 +24,35 @@ public class HealthCheckService {
 
     public void process(IisHealthCheckDTO dto) {
 
-        ExecutionStatus finalStatus =
-                processor.calculateFinalStatus(
-                        dto,
-                        1000);
-
         Application application = null;
 
         if (dto.getResults() != null
                 && !dto.getResults().isEmpty()) {
 
-            String externalId =
-                    dto.getResults()
+            String externalId
+                    = dto.getResults()
                             .get(0)
                             .getId();
 
-            application =
-                    applicationService
+            application
+                    = applicationService
                             .findByExternalId(
                                     externalId);
         }
+
+        Integer threshold = 1000;
+
+        if (application != null
+                && application.getUmbralRespuestaMs() != null) {
+
+            threshold
+                    = application.getUmbralRespuestaMs();
+        }
+
+        ExecutionStatus finalStatus
+                = processor.calculateFinalStatus(
+                        dto,
+                        threshold);
 
         Execution execution = Execution.builder()
                 .executionId(dto.getExecutionId())
@@ -78,16 +87,21 @@ public class HealthCheckService {
 
         System.out.println(
                 "Execution guardada: "
-                        + dto.getExecutionId());
+                + dto.getExecutionId());
 
         System.out.println(
                 "Estado final calculado: "
-                        + finalStatus);
+                + finalStatus);
+
+        System.out.println(
+                "Threshold utilizado: "
+                + threshold);
 
         if (application != null) {
+
             System.out.println(
                     "Application asociada: "
-                            + application.getNombre());
+                    + application.getNombre());
         }
     }
 }
