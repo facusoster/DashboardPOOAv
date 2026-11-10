@@ -16,6 +16,9 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String externalId;
+
     @Column(nullable = false)
     private String nombre;
 
@@ -26,6 +29,9 @@ public class Application {
 
     @Column(nullable = false)
     private String tipo;
+
+    @Column(nullable = false)
+    private String criticality;
 
     @Column(nullable = false)
     private Integer umbralRespuestaMs;

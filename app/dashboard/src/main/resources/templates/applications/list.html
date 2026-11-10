@@ -8,12 +8,18 @@
 
 <body>
 
-    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <h1>Aplicaciones Monitoreadas</h1>
 
     <a href="/applications/new">
         Nueva aplicación
+    </a>
+
+    |
+
+    <a href="/applications/import">
+        Importar JSON
     </a>
 
     <hr>
@@ -26,6 +32,7 @@
             <th>Nombre</th>
             <th>URL</th>
             <th>Tipo</th>
+            <th>Criticidad</th>
             <th>Acciones</th>
         </tr>
 
@@ -35,6 +42,7 @@
             <td th:text="${app.nombre}"></td>
             <td th:text="${app.url}"></td>
             <td th:text="${app.tipo}"></td>
+            <td th:text="${app.criticality}"></td>
 
             <td>
                 <a th:href="@{/applications/{id}(id=${app.id})}">

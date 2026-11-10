@@ -25,9 +25,14 @@ public class ApplicationService {
 
     public Application findById(Long id) {
         return repository.findById(id)
-                .orElseThrow(()
-                        -> new RuntimeException(
+                .orElseThrow(() ->
+                        new RuntimeException(
                                 "No se encontró la aplicación con ID: " + id));
+    }
+
+    public Application findByExternalId(String externalId) {
+        return repository.findByExternalId(externalId)
+                .orElse(null);
     }
 
     public void deactivate(Long id) {
