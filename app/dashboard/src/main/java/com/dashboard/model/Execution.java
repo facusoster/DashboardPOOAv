@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "executions")
@@ -53,4 +55,13 @@ public class Execution {
     @ManyToOne
     @JoinColumn(name = "script_id")
     private Script script;
+
+    @OneToMany(
+            mappedBy = "execution",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
+    private List<ExecutionResult> results =
+            new ArrayList<>();
 }
