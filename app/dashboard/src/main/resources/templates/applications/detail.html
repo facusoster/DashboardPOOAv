@@ -42,7 +42,41 @@
         <span th:text="${monitoredApplication.activo}"></span>
     </p>
 
-    <a th:href="@{/applications}">Volver</a>
+    <hr>
+
+    <h2>Historial de Resultados</h2>
+
+    <table border="1">
+
+        <tr>
+            <th>External ID</th>
+            <th>Estado</th>
+            <th>HTTP</th>
+            <th>Response Time (ms)</th>
+            <th>Error</th>
+        </tr>
+
+        <tr th:each="result : ${executionResults}">
+
+            <td th:text="${result.externalId}"></td>
+
+            <td th:text="${result.status}"></td>
+
+            <td th:text="${result.httpStatus}"></td>
+
+            <td th:text="${result.responseTimeMs}"></td>
+
+            <td th:text="${result.error}"></td>
+
+        </tr>
+
+    </table>
+
+    <br>
+
+    <a th:href="@{/applications}">
+        Volver
+    </a>
 
     <a th:href="@{/applications/edit/{id}(id=${monitoredApplication.id})}">
         Editar

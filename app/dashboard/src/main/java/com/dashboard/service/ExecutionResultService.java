@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ExecutionResultService {
@@ -17,5 +19,12 @@ public class ExecutionResultService {
             ExecutionResult executionResult) {
 
         return repository.save(executionResult);
+    }
+
+    public List<ExecutionResult> findByApplicationId(
+            Long applicationId) {
+
+        return repository.findByApplicationIdOrderByIdDesc(
+                applicationId);
     }
 }

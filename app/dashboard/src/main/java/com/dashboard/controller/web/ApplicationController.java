@@ -2,6 +2,7 @@ package com.dashboard.controller.web;
 
 import com.dashboard.model.Application;
 import com.dashboard.service.ApplicationService;
+import com.dashboard.service.ExecutionResultService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 public class ApplicationController {
 
     private final ApplicationService service;
+
+    private final ExecutionResultService executionResultService;
 
     @GetMapping
     public String list(Model model) {
@@ -55,7 +58,14 @@ public class ApplicationController {
 
         Application application = service.findById(id);
 
-        model.addAttribute("monitoredApplication", application);
+        model.addAttribute(
+                "monitoredApplication",
+                application);
+
+        model.addAttribute(
+                "executionResults",
+                executionResultService.findByApplicationId(
+                        application.getId()));
 
         return "applications/detail";
     }
