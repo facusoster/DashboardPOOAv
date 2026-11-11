@@ -1,6 +1,7 @@
 package com.dashboard.service;
 
 import com.dashboard.model.Execution;
+import com.dashboard.model.ExecutionStatus;
 import com.dashboard.repository.ExecutionRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,17 @@ public class ExecutionService {
 
     public long count() {
         return repository.count();
+    }
+
+    public long countOk() {
+        return repository.countByStatus(ExecutionStatus.OK);
+    }
+
+    public long countWarning() {
+        return repository.countByStatus(ExecutionStatus.WARNING);
+    }
+
+    public long countError() {
+        return repository.countByStatus(ExecutionStatus.ERROR);
     }
 }
