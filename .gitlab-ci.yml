@@ -4,7 +4,7 @@ stages:
   - build
 
 variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
 
 cache:
   key: maven-dependencies
@@ -17,5 +17,6 @@ build:
     - docker
     - qa
   script:
+    - cd app/dashboard
     - chmod +x mvnw
     - ./mvnw --batch-mode clean verify
