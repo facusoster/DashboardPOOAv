@@ -6,6 +6,14 @@ stages:
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
 
+  POSTGRES_DB: dashboarddb
+  POSTGRES_USER: ci_user
+  POSTGRES_PASSWORD: ci_password
+
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/dashboarddb
+  SPRING_DATASOURCE_USERNAME: ci_user
+  SPRING_DATASOURCE_PASSWORD: ci_password
+
 cache:
   key: maven-dependencies
   paths:
@@ -13,9 +21,15 @@ cache:
 
 build:
   stage: build
+
   tags:
     - docker
     - qa
+
+  services:
+    - name: postgres:16-alpine
+      alias: postgres
+
   script:
     - cd app/dashboard
     - chmod +x mvnw
