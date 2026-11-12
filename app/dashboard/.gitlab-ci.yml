@@ -1,0 +1,21 @@
+image: maven:3.9-eclipse-temurin-21
+
+stages:
+  - build
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  key: maven-dependencies
+  paths:
+    - .m2/repository/
+
+build:
+  stage: build
+  tags:
+    - docker
+    - qa
+  script:
+    - chmod +x mvnw
+    - ./mvnw --batch-mode clean verify
