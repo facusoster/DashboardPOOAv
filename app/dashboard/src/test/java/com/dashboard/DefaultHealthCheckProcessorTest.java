@@ -28,7 +28,8 @@ class DefaultHealthCheckProcessorTest {
         ExecutionStatus status =
                 processor.calculateFinalStatus(
                         dto,
-                        1000);
+                        1000,
+                        800.0);
 
         assertEquals(
                 ExecutionStatus.OK,
@@ -48,7 +49,8 @@ class DefaultHealthCheckProcessorTest {
         ExecutionStatus status =
                 processor.calculateFinalStatus(
                         dto,
-                        1000);
+                        1000,
+                        800.0);
 
         assertEquals(
                 ExecutionStatus.ERROR,
@@ -68,7 +70,8 @@ class DefaultHealthCheckProcessorTest {
         ExecutionStatus status =
                 processor.calculateFinalStatus(
                         dto,
-                        1000);
+                        1000,
+                        800.0);
 
         assertEquals(
                 ExecutionStatus.WARNING,

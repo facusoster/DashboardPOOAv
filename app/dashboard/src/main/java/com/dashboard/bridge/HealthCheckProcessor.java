@@ -7,5 +7,6 @@ public interface HealthCheckProcessor {
 
     ExecutionStatus calculateFinalStatus(
             IisHealthCheckDTO dto,
-            Integer threshold);
+            Integer threshold,
+            Double dynamicThreshold);
 }

@@ -83,6 +83,25 @@ public class ApplicationController {
                                 .calculateStandardDeviation(
                                         application.getId())));
 
+        model.addAttribute(
+                "minResponseTime",
+                executionResultService
+                        .calculateMinResponseTime(
+                                application.getId()));
+
+        model.addAttribute(
+                "maxResponseTime",
+                executionResultService
+                        .calculateMaxResponseTime(
+                                application.getId()));
+
+        model.addAttribute(
+                "dynamicThreshold",
+                Math.round(
+                        executionResultService
+                                .calculateDynamicThreshold(
+                                        application.getId())));
+
         return "applications/detail";
     }
 

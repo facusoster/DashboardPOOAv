@@ -56,7 +56,6 @@ public class ExecutionResultService {
     }
 
     /**
-     * Calcula el desvío estándar poblacional de los tiempos de respuesta de una aplicación.
      * Desvío estándar poblacional.
      */
     public double calculateStandardDeviation(
@@ -84,5 +83,59 @@ public class ExecutionResultService {
                         .orElse(0);
 
         return Math.sqrt(variance);
+    }
+
+    public int calculateMinResponseTime(
+            Long applicationId) {
+
+        List<Integer> responseTimes =
+                getResponseTimes(applicationId);
+
+        if (responseTimes.isEmpty()) {
+            return 0;
+        }
+
+        return responseTimes
+                .stream()
+                .mapToInt(Integer::intValue)
+                .min()
+                .orElse(0);
+    }
+
+    public int calculateMaxResponseTime(
+            Long applicationId) {
+
+        List<Integer> responseTimes =
+                getResponseTimes(applicationId);
+
+        if (responseTimes.isEmpty()) {
+            return 0;
+        }
+
+        return responseTimes
+                .stream()
+                .mapToInt(Integer::intValue)
+                .max()
+                .orElse(0);
+    }
+
+    /**
+     * Baseline adaptativo
+     *
+     * Umbral dinámico = promedio + 2 * desvío
+     */
+    public double calculateDynamicThreshold(
+            Long applicationId) {
+
+        double average =
+                calculateAverageResponseTime(
+                        applicationId);
+
+        double standardDeviation =
+                calculateStandardDeviation(
+                        applicationId);
+
+        return average +
+                (standardDeviation * 2);
     }
 }

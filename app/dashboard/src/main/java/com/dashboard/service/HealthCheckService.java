@@ -32,6 +32,8 @@ public class HealthCheckService {
 
         Integer threshold = 1000;
 
+        double dynamicThreshold = threshold;
+
         if (dto.getResults() != null
                 && !dto.getResults().isEmpty()) {
 
@@ -50,13 +52,32 @@ public class HealthCheckService {
 
                 threshold =
                         firstApplication.getUmbralRespuestaMs();
+
+                dynamicThreshold =
+                        executionResultService
+                                .calculateDynamicThreshold(
+                                        firstApplication.getId());
+
+                if (dynamicThreshold <= 0) {
+                    dynamicThreshold = threshold;
+                }
             }
         }
+
+        System.out.println(
+                "Threshold fijo: "
+                        + threshold);
+
+        System.out.println(
+                "Threshold dinamico: "
+                        + Math.round(
+                                dynamicThreshold));
 
         ExecutionStatus finalStatus =
                 processor.calculateFinalStatus(
                         dto,
-                        threshold);
+                        threshold,
+                        dynamicThreshold);
 
         Execution execution = Execution.builder()
                 .executionId(dto.getExecutionId())
@@ -87,25 +108,34 @@ public class HealthCheckService {
                                 .getFAIL())
                 .build();
 
-        execution = executionService.save(execution);
+        execution = executionService.save(
+                execution);
 
         for (ResultDTO result : dto.getResults()) {
 
             Application application =
-                    applicationService.findByExternalId(
-                            result.getId());
+                    applicationService
+                            .findByExternalId(
+                                    result.getId());
 
             ExecutionResult executionResult =
                     ExecutionResult.builder()
-                            .externalId(result.getId())
-                            .applicationName(result.getName())
-                            .status(result.getStatus())
-                            .httpStatus(result.getHttpStatus())
+                            .externalId(
+                                    result.getId())
+                            .applicationName(
+                                    result.getName())
+                            .status(
+                                    result.getStatus())
+                            .httpStatus(
+                                    result.getHttpStatus())
                             .responseTimeMs(
                                     result.getResponseTimeMs())
-                            .error(result.getError())
-                            .execution(execution)
-                            .application(application)
+                            .error(
+                                    result.getError())
+                            .execution(
+                                    execution)
+                            .application(
+                                    application)
                             .build();
 
             executionResultService.save(
