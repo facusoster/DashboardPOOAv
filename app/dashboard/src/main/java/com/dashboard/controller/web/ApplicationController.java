@@ -1,6 +1,8 @@
 package com.dashboard.controller.web;
 
+import com.dashboard.dto.ApplicationHealthDTO;
 import com.dashboard.model.Application;
+import com.dashboard.service.ApplicationHealthService;
 import com.dashboard.service.ApplicationService;
 import com.dashboard.service.ExecutionResultService;
 
@@ -18,6 +20,8 @@ public class ApplicationController {
     private final ApplicationService service;
 
     private final ExecutionResultService executionResultService;
+
+    private final ApplicationHealthService applicationHealthService;
 
     @GetMapping
     public String list(Model model) {
@@ -59,48 +63,23 @@ public class ApplicationController {
         Application application =
                 service.findById(id);
 
+        ApplicationHealthDTO health =
+                applicationHealthService
+                        .buildHealth(id);
+
         model.addAttribute(
                 "monitoredApplication",
                 application);
+
+        model.addAttribute(
+                "applicationHealth",
+                health);
 
         model.addAttribute(
                 "executionResults",
                 executionResultService
                         .findByApplicationId(
                                 application.getId()));
-
-        model.addAttribute(
-                "averageResponseTime",
-                Math.round(
-                        executionResultService
-                                .calculateAverageResponseTime(
-                                        application.getId())));
-
-        model.addAttribute(
-                "standardDeviation",
-                Math.round(
-                        executionResultService
-                                .calculateStandardDeviation(
-                                        application.getId())));
-
-        model.addAttribute(
-                "minResponseTime",
-                executionResultService
-                        .calculateMinResponseTime(
-                                application.getId()));
-
-        model.addAttribute(
-                "maxResponseTime",
-                executionResultService
-                        .calculateMaxResponseTime(
-                                application.getId()));
-
-        model.addAttribute(
-                "dynamicThreshold",
-                Math.round(
-                        executionResultService
-                                .calculateDynamicThreshold(
-                                        application.getId())));
 
         return "applications/detail";
     }

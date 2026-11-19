@@ -12,19 +12,23 @@
 
     <h1>Detalle Aplicación</h1>
 
-    <p>ID:
+    <p>
+        ID:
         <span th:text="${monitoredApplication.id}"></span>
     </p>
 
-    <p>Nombre:
+    <p>
+        Nombre:
         <span th:text="${monitoredApplication.nombre}"></span>
     </p>
 
-    <p>URL:
+    <p>
+        URL:
         <span th:text="${monitoredApplication.url}"></span>
     </p>
 
-    <p>Tipo:
+    <p>
+        Tipo:
         <span th:text="${monitoredApplication.tipo}"></span>
     </p>
 
@@ -38,47 +42,73 @@
         <span th:text="${monitoredApplication.externalId}"></span>
     </p>
 
-    <p>Activo:
+    <p>
+        Activo:
         <span th:text="${monitoredApplication.activo}"></span>
     </p>
 
     <hr>
 
-    <h2>Métricas Históricas</h2>
+    <h2>Application Health</h2>
 
     <p>
-        Promedio de respuesta:
-        <strong th:text="${averageResponseTime}">
+        Estado actual:
+        <strong th:text="${applicationHealth.currentStatus}">
+        </strong>
+    </p>
+
+    <p>
+        Health Score:
+        <strong th:text="${applicationHealth.healthScore}">
+        </strong>
+    </p>
+
+    <p>
+        Última respuesta:
+        <strong th:text="${applicationHealth.lastResponseTime}">
+        </strong>
+        ms
+    </p>
+
+    <p>
+        Promedio:
+        <strong th:text="${#numbers.formatDecimal(applicationHealth.averageResponseTime,1,2)}">
         </strong>
         ms
     </p>
 
     <p>
         Desvío estándar:
-        <strong th:text="${standardDeviation}">
-        </strong>
-        ms
-    </p>
-
-    <p>
-        Tiempo mínimo:
-        <strong th:text="${minResponseTime}">
-        </strong>
-        ms
-    </p>
-
-    <p>
-        Tiempo máximo:
-        <strong th:text="${maxResponseTime}">
+        <strong th:text="${#numbers.formatDecimal(applicationHealth.standardDeviation,1,2)}">
         </strong>
         ms
     </p>
 
     <p>
         Umbral dinámico:
-        <strong th:text="${dynamicThreshold}">
+        <strong th:text="${#numbers.formatDecimal(applicationHealth.dynamicThreshold,1,2)}">
         </strong>
         ms
+    </p>
+
+    <p>
+        Tiempo mínimo:
+        <strong th:text="${applicationHealth.minResponseTime}">
+        </strong>
+        ms
+    </p>
+
+    <p>
+        Tiempo máximo:
+        <strong th:text="${applicationHealth.maxResponseTime}">
+        </strong>
+        ms
+    </p>
+
+    <p>
+        Ejecuciones analizadas:
+        <strong th:text="${applicationHealth.totalExecutions}">
+        </strong>
     </p>
 
     <hr>

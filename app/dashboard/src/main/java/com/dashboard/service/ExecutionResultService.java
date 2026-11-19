@@ -122,7 +122,8 @@ public class ExecutionResultService {
     /**
      * Baseline adaptativo
      *
-     * Umbral dinámico = promedio + 2 * desvío
+     * Umbral dinámico =
+     * promedio + 2 * desvío
      */
     public double calculateDynamicThreshold(
             Long applicationId) {
@@ -137,5 +138,32 @@ public class ExecutionResultService {
 
         return average +
                 (standardDeviation * 2);
+    }
+
+    /**
+     * Último resultado conocido.
+     */
+    public ExecutionResult getLastResult(
+            Long applicationId) {
+
+        List<ExecutionResult> results =
+                findByApplicationId(
+                        applicationId);
+
+        if (results.isEmpty()) {
+            return null;
+        }
+
+        return results.get(0);
+    }
+
+    /**
+     * Cantidad de resultados históricos.
+     */
+    public int countResults(
+            Long applicationId) {
+
+        return findByApplicationId(
+                applicationId).size();
     }
 }
