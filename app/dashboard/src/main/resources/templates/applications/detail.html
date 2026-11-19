@@ -44,6 +44,24 @@
 
     <hr>
 
+    <h2>Métricas Históricas</h2>
+
+    <p>
+        Promedio de respuesta:
+        <strong th:text="${averageResponseTime}">
+        </strong>
+        ms
+    </p>
+
+    <p>
+        Desvío estándar:
+        <strong th:text="${standardDeviation}">
+        </strong>
+        ms
+    </p>
+
+    <hr>
+
     <h2>Historial de Resultados</h2>
 
     <table border="1">

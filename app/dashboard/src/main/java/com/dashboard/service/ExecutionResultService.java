@@ -28,11 +28,6 @@ public class ExecutionResultService {
                 applicationId);
     }
 
-    /**
-     * Sprint 1
-     * Obtiene únicamente los tiempos de respuesta
-     * históricos de una aplicación.
-     */
     public List<Integer> getResponseTimes(
             Long applicationId) {
 
@@ -41,5 +36,53 @@ public class ExecutionResultService {
                 .stream()
                 .map(ExecutionResult::getResponseTimeMs)
                 .toList();
+    }
+
+    public double calculateAverageResponseTime(
+            Long applicationId) {
+
+        List<Integer> responseTimes =
+                getResponseTimes(applicationId);
+
+        if (responseTimes.isEmpty()) {
+            return 0;
+        }
+
+        return responseTimes
+                .stream()
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElse(0);
+    }
+
+    /**
+     * Calcula el desvío estándar poblacional de los tiempos de respuesta de una aplicación.
+     * Desvío estándar poblacional.
+     */
+    public double calculateStandardDeviation(
+            Long applicationId) {
+
+        List<Integer> responseTimes =
+                getResponseTimes(applicationId);
+
+        if (responseTimes.size() <= 1) {
+            return 0;
+        }
+
+        double average =
+                calculateAverageResponseTime(
+                        applicationId);
+
+        double variance =
+                responseTimes
+                        .stream()
+                        .mapToDouble(value ->
+                                Math.pow(
+                                        value - average,
+                                        2))
+                        .average()
+                        .orElse(0);
+
+        return Math.sqrt(variance);
     }
 }

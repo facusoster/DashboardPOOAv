@@ -56,7 +56,8 @@ public class ApplicationController {
             @PathVariable Long id,
             Model model) {
 
-        Application application = service.findById(id);
+        Application application =
+                service.findById(id);
 
         model.addAttribute(
                 "monitoredApplication",
@@ -64,8 +65,23 @@ public class ApplicationController {
 
         model.addAttribute(
                 "executionResults",
-                executionResultService.findByApplicationId(
-                        application.getId()));
+                executionResultService
+                        .findByApplicationId(
+                                application.getId()));
+
+        model.addAttribute(
+                "averageResponseTime",
+                Math.round(
+                        executionResultService
+                                .calculateAverageResponseTime(
+                                        application.getId())));
+
+        model.addAttribute(
+                "standardDeviation",
+                Math.round(
+                        executionResultService
+                                .calculateStandardDeviation(
+                                        application.getId())));
 
         return "applications/detail";
     }
