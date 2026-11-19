@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultHealthCheckProcessorTest {
 
-    private final DefaultHealthCheckProcessor processor =
-            new DefaultHealthCheckProcessor();
+    private final DefaultHealthCheckProcessor processor
+            = new DefaultHealthCheckProcessor();
 
     @Test
     void debeRetornarOKCuandoElResultadoEsValido() {
@@ -25,8 +25,8 @@ class DefaultHealthCheckProcessorTest {
         IisHealthCheckDTO dto = new IisHealthCheckDTO();
         dto.setResults(List.of(result));
 
-        ExecutionStatus status =
-                processor.calculateFinalStatus(
+        ExecutionStatus status
+                = processor.calculateFinalStatus(
                         dto,
                         1000,
                         800.0);
@@ -46,8 +46,8 @@ class DefaultHealthCheckProcessorTest {
         IisHealthCheckDTO dto = new IisHealthCheckDTO();
         dto.setResults(List.of(result));
 
-        ExecutionStatus status =
-                processor.calculateFinalStatus(
+        ExecutionStatus status
+                = processor.calculateFinalStatus(
                         dto,
                         1000,
                         800.0);
@@ -67,14 +67,40 @@ class DefaultHealthCheckProcessorTest {
         IisHealthCheckDTO dto = new IisHealthCheckDTO();
         dto.setResults(List.of(result));
 
-        ExecutionStatus status =
-                processor.calculateFinalStatus(
+        ExecutionStatus status
+                = processor.calculateFinalStatus(
                         dto,
                         1000,
                         800.0);
 
         assertEquals(
                 ExecutionStatus.WARNING,
+                status);
+    }
+
+    @Test
+    void debeRetornarDEGRADEDCuandoSuperaElBaseline() {
+
+        ResultDTO result = new ResultDTO();
+        result.setStatus("OK");
+
+        /*
+     * Supera el umbral dinámico
+     * pero NO el umbral fijo.
+         */
+        result.setResponseTimeMs(900);
+
+        IisHealthCheckDTO dto = new IisHealthCheckDTO();
+        dto.setResults(List.of(result));
+
+        ExecutionStatus status
+                = processor.calculateFinalStatus(
+                        dto,
+                        1000,
+                        800.0);
+
+        assertEquals(
+                ExecutionStatus.DEGRADED,
                 status);
     }
 }

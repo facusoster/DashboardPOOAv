@@ -14,19 +14,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class DashboardController {
 
     private final ApplicationService applicationService;
+
     private final ExecutionService executionService;
 
     @GetMapping("/")
     public String dashboard(Model model) {
 
-        long executions = executionService.count();
-        long ok = executionService.countOk();
-        long warning = executionService.countWarning();
-        long error = executionService.countError();
+        long executions =
+                executionService.count();
 
-        double successRate = executions == 0
-                ? 0
-                : ((double) ok / executions) * 100;
+        long ok =
+                executionService.countOk();
+
+        long degraded =
+                executionService.countDegraded();
+
+        long warning =
+                executionService.countWarning();
+
+        long error =
+                executionService.countError();
+
+        double successRate =
+                executions == 0
+                        ? 0
+                        : ((double) ok / executions) * 100;
 
         model.addAttribute(
                 "applicationsCount",
@@ -39,6 +51,10 @@ public class DashboardController {
         model.addAttribute(
                 "okCount",
                 ok);
+
+        model.addAttribute(
+                "degradedCount",
+                degraded);
 
         model.addAttribute(
                 "warningCount",

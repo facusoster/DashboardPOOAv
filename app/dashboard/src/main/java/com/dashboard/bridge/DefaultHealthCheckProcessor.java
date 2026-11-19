@@ -25,7 +25,10 @@ public class DefaultHealthCheckProcessor
             }
 
             /*
-             * Umbral fijo de negocio
+             * Umbral fijo definido
+             * por el administrador.
+             *
+             * Situación crítica.
              */
             if (result.getResponseTimeMs()
                     > threshold) {
@@ -34,12 +37,16 @@ public class DefaultHealthCheckProcessor
             }
 
             /*
-             * Baseline adaptativo
+             * Baseline adaptativo.
+             *
+             * La aplicación sigue funcionando,
+             * pero se comporta peor que su
+             * histórico normal.
              */
             if (result.getResponseTimeMs()
                     > dynamicThreshold) {
 
-                return ExecutionStatus.WARNING;
+                return ExecutionStatus.DEGRADED;
             }
         }
 
