@@ -27,4 +27,19 @@ public class ExecutionResultService {
         return repository.findByApplicationIdOrderByIdDesc(
                 applicationId);
     }
+
+    /**
+     * Sprint 1
+     * Obtiene únicamente los tiempos de respuesta
+     * históricos de una aplicación.
+     */
+    public List<Integer> getResponseTimes(
+            Long applicationId) {
+
+        return repository
+                .findByApplicationId(applicationId)
+                .stream()
+                .map(ExecutionResult::getResponseTimeMs)
+                .toList();
+    }
 }
