@@ -8,6 +8,9 @@ import com.dashboard.service.ExecutionResultService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +27,32 @@ public class ApplicationController {
     private final ApplicationHealthService applicationHealthService;
 
     @GetMapping
-    public String list(Model model) {
+    public String list(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
+
+        Pageable pageable =
+                PageRequest.of(page, size);
+
+        Page<Application> applications =
+                service.findAll(pageable);
 
         model.addAttribute(
                 "applications",
-                service.findAll());
+                applications.getContent());
+
+        model.addAttribute(
+                "currentPage",
+                page);
+
+        model.addAttribute(
+                "totalPages",
+                applications.getTotalPages());
+
+        model.addAttribute(
+                "pageSize",
+                size);
 
         return "applications/list";
     }

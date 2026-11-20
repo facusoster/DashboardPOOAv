@@ -24,6 +24,37 @@
 
     <hr>
 
+    <form method="get" th:action="@{/applications}">
+        Mostrar:
+
+        <select name="size" onchange="this.form.submit()">
+            <option value="10"
+                    th:selected="${pageSize == 10}">
+                10
+            </option>
+
+            <option value="20"
+                    th:selected="${pageSize == 20}">
+                20
+            </option>
+
+            <option value="50"
+                    th:selected="${pageSize == 50}">
+                50
+            </option>
+
+            <option value="100"
+                    th:selected="${pageSize == 100}">
+                100
+            </option>
+        </select>
+
+        <input type="hidden"
+               name="page"
+               th:value="${currentPage}">
+    </form>
+
+    <br>
 
     <table border="1">
 
@@ -45,6 +76,7 @@
             <td th:text="${app.criticality}"></td>
 
             <td>
+
                 <a th:href="@{/applications/{id}(id=${app.id})}">
                     Ver
                 </a>
@@ -57,20 +89,52 @@
 
                 |
 
-                <form th:action="@{/applications/deactivate/{id}(id=${app.id})}" method="post" style="display:inline;"
-                    th:if="${app.activo}">
+                <form th:action="@{/applications/deactivate/{id}(id=${app.id})}"
+                      method="post"
+                      style="display:inline;"
+                      th:if="${app.activo}">
 
-                    <button type="submit" onclick="return confirm('¿Desactivar esta aplicación?');">
+                    <button type="submit"
+                            onclick="return confirm('¿Desactivar esta aplicación?');">
                         Desactivar
                     </button>
 
                 </form>
+
             </td>
 
         </tr>
 
     </table>
 
+    <br>
+
+    <div>
+
+        Página
+        <span th:text="${currentPage + 1}"></span>
+        de
+        <span th:text="${totalPages}"></span>
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <a th:if="${currentPage > 0}"
+           th:href="@{/applications(page=${currentPage - 1},size=${pageSize})}">
+            ← Anterior
+        </a>
+
+        &nbsp;
+
+        <a th:if="${currentPage + 1 < totalPages}"
+           th:href="@{/applications(page=${currentPage + 1},size=${pageSize})}">
+            Siguiente →
+        </a>
+
+    </div>
 
 </body>
 

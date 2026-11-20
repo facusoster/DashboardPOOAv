@@ -5,6 +5,8 @@ import com.dashboard.repository.ApplicationRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,12 @@ public class ApplicationService {
 
     public List<Application> findAll() {
         return repository.findAll();
+    }
+
+    public Page<Application> findAll(
+            Pageable pageable) {
+
+        return repository.findAll(pageable);
     }
 
     public Application save(Application application) {

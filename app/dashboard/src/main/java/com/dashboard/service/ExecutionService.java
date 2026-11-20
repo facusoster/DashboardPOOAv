@@ -6,6 +6,8 @@ import com.dashboard.repository.ExecutionRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +24,21 @@ public class ExecutionService {
         return repository.save(execution);
     }
 
+    /**
+     * Método actual.
+     */
     public List<Execution> findAll() {
 
         return repository.findAll();
+    }
+
+    /**
+     * Nuevo método para paginación.
+     */
+    public Page<Execution> findAll(
+            Pageable pageable) {
+
+        return repository.findAll(pageable);
     }
 
     public long count() {
