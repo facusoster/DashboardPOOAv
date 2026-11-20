@@ -14,39 +14,93 @@
 
     <hr>
 
+    <h2>Dashboard Health</h2>
+
     <p>
         Aplicaciones registradas:
-        <strong th:text="${applicationsCount}"></strong>
+        <strong
+            th:text="${dashboardHealth.applicationsCount}">
+        </strong>
     </p>
 
     <p>
-        Ejecuciones registradas:
-        <strong th:text="${executionsCount}"></strong>
+        Aplicaciones activas:
+        <strong
+            th:text="${dashboardHealth.activeApplications}">
+        </strong>
     </p>
 
     <p>
-        OK:
-        <strong th:text="${okCount}"></strong>
+        Aplicaciones inactivas:
+        <strong
+            th:text="${dashboardHealth.inactiveApplications}">
+        </strong>
     </p>
 
     <p>
-        DEGRADED:
-        <strong th:text="${degradedCount}"></strong>
+        Aplicaciones sin monitoreo:
+        <strong
+            th:text="${dashboardHealth.unknownApplications}">
+        </strong>
+    </p>
+
+    <hr>
+
+    <p>
+        Health Global:
+        <strong
+            th:text="${dashboardHealth.averageHealthScore}">
+        </strong>
+        / 100
     </p>
 
     <p>
-        WARNING:
-        <strong th:text="${warningCount}"></strong>
+        Healthy (≥ 80):
+        <strong
+            th:text="${dashboardHealth.healthyCount}">
+        </strong>
     </p>
 
     <p>
-        ERROR:
-        <strong th:text="${errorCount}"></strong>
+        Degraded (50 - 79):
+        <strong
+            th:text="${dashboardHealth.degradedCount}">
+        </strong>
     </p>
 
     <p>
-        Porcentaje de éxito:
-        <strong th:text="${successRate}"></strong>%
+        Critical (&lt; 50):
+        <strong
+            th:text="${dashboardHealth.criticalCount}">
+        </strong>
+    </p>
+
+    <hr>
+
+    <p>
+        Mejor Score:
+        <strong
+            th:text="${dashboardHealth.bestHealthScore}">
+        </strong>
+
+        -
+
+        <strong
+            th:text="${dashboardHealth.bestApplicationName}">
+        </strong>
+    </p>
+
+    <p>
+        Peor Score:
+        <strong
+            th:text="${dashboardHealth.worstHealthScore}">
+        </strong>
+
+        -
+
+        <strong
+            th:text="${dashboardHealth.worstApplicationName}">
+        </strong>
     </p>
 
 </body>

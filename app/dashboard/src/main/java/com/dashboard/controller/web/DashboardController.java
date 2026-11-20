@@ -1,7 +1,7 @@
 package com.dashboard.controller.web;
 
-import com.dashboard.service.ApplicationService;
-import com.dashboard.service.ExecutionService;
+import com.dashboard.dto.DashboardHealthDTO;
+import com.dashboard.service.DashboardHealthService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,60 +13,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class DashboardController {
 
-    private final ApplicationService applicationService;
-
-    private final ExecutionService executionService;
+    private final DashboardHealthService dashboardHealthService;
 
     @GetMapping("/")
     public String dashboard(Model model) {
 
-        long executions =
-                executionService.count();
-
-        long ok =
-                executionService.countOk();
-
-        long degraded =
-                executionService.countDegraded();
-
-        long warning =
-                executionService.countWarning();
-
-        long error =
-                executionService.countError();
-
-        double successRate =
-                executions == 0
-                        ? 0
-                        : ((double) ok / executions) * 100;
+        DashboardHealthDTO dashboard
+                = dashboardHealthService
+                        .buildDashboard();
 
         model.addAttribute(
-                "applicationsCount",
-                applicationService.count());
-
-        model.addAttribute(
-                "executionsCount",
-                executions);
-
-        model.addAttribute(
-                "okCount",
-                ok);
-
-        model.addAttribute(
-                "degradedCount",
-                degraded);
-
-        model.addAttribute(
-                "warningCount",
-                warning);
-
-        model.addAttribute(
-                "errorCount",
-                error);
-
-        model.addAttribute(
-                "successRate",
-                Math.round(successRate));
+                "dashboardHealth",
+                dashboard);
 
         return "dashboard";
     }
