@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +23,9 @@ public class DashboardHealthService {
 
         List<Application> applications =
                 applicationService.findAll();
+
+        List<ApplicationHealthDTO> applicationCards =
+                new ArrayList<>();
 
         int activeApplications = 0;
         int inactiveApplications = 0;
@@ -42,6 +46,14 @@ public class DashboardHealthService {
 
         for (Application application : applications) {
 
+            ApplicationHealthDTO health =
+                    applicationHealthService
+                            .buildHealth(
+                                    application.getId());
+
+            applicationCards.add(
+                    health);
+
             if (Boolean.FALSE.equals(
                     application.getActivo())) {
 
@@ -50,11 +62,6 @@ public class DashboardHealthService {
             }
 
             activeApplications++;
-
-            ApplicationHealthDTO health =
-                    applicationHealthService
-                            .buildHealth(
-                                    application.getId());
 
             if (health.getTotalExecutions() == 0) {
 
@@ -136,6 +143,8 @@ public class DashboardHealthService {
                         worstScore)
                 .worstApplicationName(
                         worstApplicationName)
+                .applications(
+                        applicationCards)
                 .build();
     }
 }

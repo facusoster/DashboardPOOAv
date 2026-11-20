@@ -1,5 +1,7 @@
 package com.dashboard.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -70,4 +72,10 @@ public class DashboardHealthDTO {
      * Aplicación con peor score.
      */
     private String worstApplicationName;
+
+    /**
+     * Aplicaciones mostradas
+     * en el dashboard principal.
+     */
+    private List<ApplicationHealthDTO> applications;
 }

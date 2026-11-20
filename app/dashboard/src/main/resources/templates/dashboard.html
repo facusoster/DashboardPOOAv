@@ -18,90 +18,114 @@
 
     <p>
         Aplicaciones registradas:
-        <strong
-            th:text="${dashboardHealth.applicationsCount}">
-        </strong>
+        <strong th:text="${dashboardHealth.applicationsCount}"></strong>
     </p>
 
     <p>
         Aplicaciones activas:
-        <strong
-            th:text="${dashboardHealth.activeApplications}">
-        </strong>
+        <strong th:text="${dashboardHealth.activeApplications}"></strong>
     </p>
 
     <p>
         Aplicaciones inactivas:
-        <strong
-            th:text="${dashboardHealth.inactiveApplications}">
-        </strong>
+        <strong th:text="${dashboardHealth.inactiveApplications}"></strong>
     </p>
 
     <p>
         Aplicaciones sin monitoreo:
-        <strong
-            th:text="${dashboardHealth.unknownApplications}">
-        </strong>
+        <strong th:text="${dashboardHealth.unknownApplications}"></strong>
     </p>
 
     <hr>
 
     <p>
         Health Global:
-        <strong
-            th:text="${dashboardHealth.averageHealthScore}">
-        </strong>
+        <strong th:text="${dashboardHealth.averageHealthScore}"></strong>
         / 100
     </p>
 
     <p>
-        Healthy (≥ 80):
-        <strong
-            th:text="${dashboardHealth.healthyCount}">
-        </strong>
+        Healthy:
+        <strong th:text="${dashboardHealth.healthyCount}"></strong>
     </p>
 
     <p>
-        Degraded (50 - 79):
-        <strong
-            th:text="${dashboardHealth.degradedCount}">
-        </strong>
+        Degraded:
+        <strong th:text="${dashboardHealth.degradedCount}"></strong>
     </p>
 
     <p>
-        Critical (&lt; 50):
-        <strong
-            th:text="${dashboardHealth.criticalCount}">
-        </strong>
+        Critical:
+        <strong th:text="${dashboardHealth.criticalCount}"></strong>
     </p>
 
     <hr>
 
     <p>
         Mejor Score:
-        <strong
-            th:text="${dashboardHealth.bestHealthScore}">
-        </strong>
-
+        <strong th:text="${dashboardHealth.bestHealthScore}"></strong>
         -
-
-        <strong
-            th:text="${dashboardHealth.bestApplicationName}">
-        </strong>
+        <strong th:text="${dashboardHealth.bestApplicationName}"></strong>
     </p>
 
     <p>
         Peor Score:
-        <strong
-            th:text="${dashboardHealth.worstHealthScore}">
-        </strong>
-
+        <strong th:text="${dashboardHealth.worstHealthScore}"></strong>
         -
-
-        <strong
-            th:text="${dashboardHealth.worstApplicationName}">
-        </strong>
+        <strong th:text="${dashboardHealth.worstApplicationName}"></strong>
     </p>
+
+    <hr>
+
+    <h2>Aplicaciones</h2>
+
+    <div th:each="app : ${dashboardHealth.applications}">
+
+        <hr>
+
+        <h3 th:text="${app.applicationName}">
+            Nombre
+        </h3>
+
+        <p>
+            Estado:
+            <strong th:text="${app.currentStatus}">
+            </strong>
+        </p>
+
+        <p>
+            Score:
+            <strong th:text="${app.healthScore}">
+            </strong>
+        </p>
+
+        <p>
+            Última respuesta:
+            <strong th:text="${app.lastResponseTime}">
+            </strong>
+            ms
+        </p>
+
+        <p>
+            Criticidad:
+            <strong th:text="${app.criticality}">
+            </strong>
+        </p>
+
+        <p>
+            Ejecuciones:
+            <strong th:text="${app.totalExecutions}">
+            </strong>
+        </p>
+
+        <p>
+            Umbral dinámico:
+            <strong th:text="${#numbers.formatDecimal(app.dynamicThreshold,1,2)}">
+            </strong>
+            ms
+        </p>
+
+    </div>
 
 </body>
 
