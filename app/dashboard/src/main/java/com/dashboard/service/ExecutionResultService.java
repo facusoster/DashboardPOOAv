@@ -41,8 +41,8 @@ public class ExecutionResultService {
     public double calculateAverageResponseTime(
             Long applicationId) {
 
-        List<Integer> responseTimes =
-                getResponseTimes(applicationId);
+        List<Integer> responseTimes
+                = getResponseTimes(applicationId);
 
         if (responseTimes.isEmpty()) {
             return 0;
@@ -61,22 +61,22 @@ public class ExecutionResultService {
     public double calculateStandardDeviation(
             Long applicationId) {
 
-        List<Integer> responseTimes =
-                getResponseTimes(applicationId);
+        List<Integer> responseTimes
+                = getResponseTimes(applicationId);
 
         if (responseTimes.size() <= 1) {
             return 0;
         }
 
-        double average =
-                calculateAverageResponseTime(
+        double average
+                = calculateAverageResponseTime(
                         applicationId);
 
-        double variance =
-                responseTimes
+        double variance
+                = responseTimes
                         .stream()
-                        .mapToDouble(value ->
-                                Math.pow(
+                        .mapToDouble(value
+                                -> Math.pow(
                                         value - average,
                                         2))
                         .average()
@@ -88,8 +88,8 @@ public class ExecutionResultService {
     public int calculateMinResponseTime(
             Long applicationId) {
 
-        List<Integer> responseTimes =
-                getResponseTimes(applicationId);
+        List<Integer> responseTimes
+                = getResponseTimes(applicationId);
 
         if (responseTimes.isEmpty()) {
             return 0;
@@ -105,8 +105,8 @@ public class ExecutionResultService {
     public int calculateMaxResponseTime(
             Long applicationId) {
 
-        List<Integer> responseTimes =
-                getResponseTimes(applicationId);
+        List<Integer> responseTimes
+                = getResponseTimes(applicationId);
 
         if (responseTimes.isEmpty()) {
             return 0;
@@ -122,22 +122,21 @@ public class ExecutionResultService {
     /**
      * Baseline adaptativo
      *
-     * Umbral dinámico =
-     * promedio + 2 * desvío
+     * Umbral dinámico = promedio + 2 * desvío
      */
     public double calculateDynamicThreshold(
             Long applicationId) {
 
-        double average =
-                calculateAverageResponseTime(
+        double average
+                = calculateAverageResponseTime(
                         applicationId);
 
-        double standardDeviation =
-                calculateStandardDeviation(
+        double standardDeviation
+                = calculateStandardDeviation(
                         applicationId);
 
-        return average +
-                (standardDeviation * 2);
+        return average
+                + (standardDeviation * 2);
     }
 
     /**
@@ -146,8 +145,8 @@ public class ExecutionResultService {
     public ExecutionResult getLastResult(
             Long applicationId) {
 
-        List<ExecutionResult> results =
-                findByApplicationId(
+        List<ExecutionResult> results
+                = findByApplicationId(
                         applicationId);
 
         if (results.isEmpty()) {
@@ -165,5 +164,54 @@ public class ExecutionResultService {
 
         return findByApplicationId(
                 applicationId).size();
+    }
+
+    /* ======================================
+       - Dashboard Analítico -
+       ====================================== */
+    public List<ExecutionResult>
+            getTop5BestPerformance() {
+
+        return repository
+                .findTop5ByOrderByResponseTimeMsAsc();
+    }
+
+    public List<ExecutionResult>
+            getTop5WorstPerformance() {
+
+        return repository
+                .findTop5ByOrderByResponseTimeMsDesc();
+    }
+
+    public List<ExecutionResult>
+            getTop5Ok() {
+
+        return repository
+                .findTop5ByStatusOrderByResponseTimeMsAsc(
+                        "OK");
+    }
+
+    public List<ExecutionResult>
+            getTop5Warning() {
+
+        return repository
+                .findTop5ByStatusOrderByResponseTimeMsAsc(
+                        "WARNING");
+    }
+
+    public List<ExecutionResult>
+            getTop5Error() {
+
+        return repository
+                .findTop5ByStatusOrderByResponseTimeMsAsc(
+                        "ERROR");
+    }
+
+    public List<ExecutionResult>
+            getTop5Degraded() {
+
+        return repository
+                .findTop5ByStatusOrderByResponseTimeMsAsc(
+                        "DEGRADED");
     }
 }

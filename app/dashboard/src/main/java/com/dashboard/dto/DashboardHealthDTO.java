@@ -74,8 +74,21 @@ public class DashboardHealthDTO {
     private String worstApplicationName;
 
     /**
-     * Aplicaciones mostradas
-     * en el dashboard principal.
+     * Aplicaciones mostradas en el dashboard principal.
      */
     private List<ApplicationHealthDTO> applications;
+
+    /**
+     * Rankings de score.
+     */
+    private List<ApplicationHealthDTO> top5BestScore;
+
+    private List<ApplicationHealthDTO> top5WorstScore;
+
+    /**
+     * Rankings de rendimiento basados en la última ejecución conocida.
+     */
+    private List<ApplicationHealthDTO> top5BestPerformance;
+
+    private List<ApplicationHealthDTO> top5WorstPerformance;
 }

@@ -2,6 +2,7 @@ package com.dashboard.controller.web;
 
 import com.dashboard.dto.DashboardHealthDTO;
 import com.dashboard.service.DashboardHealthService;
+import com.dashboard.service.ExecutionResultService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +16,8 @@ public class DashboardController {
 
     private final DashboardHealthService dashboardHealthService;
 
+    private final ExecutionResultService executionResultService;
+
     @GetMapping("/")
     public String dashboard(Model model) {
 
@@ -25,6 +28,36 @@ public class DashboardController {
         model.addAttribute(
                 "dashboardHealth",
                 dashboard);
+
+        model.addAttribute(
+                "topBestPerformance",
+                executionResultService
+                        .getTop5BestPerformance());
+
+        model.addAttribute(
+                "topWorstPerformance",
+                executionResultService
+                        .getTop5WorstPerformance());
+
+        model.addAttribute(
+                "topOk",
+                executionResultService
+                        .getTop5Ok());
+
+        model.addAttribute(
+                "topWarning",
+                executionResultService
+                        .getTop5Warning());
+
+        model.addAttribute(
+                "topError",
+                executionResultService
+                        .getTop5Error());
+
+        model.addAttribute(
+                "topDegraded",
+                executionResultService
+                        .getTop5Degraded());
 
         return "dashboard";
     }

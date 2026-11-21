@@ -10,29 +10,43 @@ public interface ExecutionResultRepository
         extends JpaRepository<ExecutionResult, Long> {
 
     List<ExecutionResult>
-    findByApplicationIdOrderByIdDesc(
-            Long applicationId);
+            findByApplicationIdOrderByIdDesc(
+                    Long applicationId);
 
     List<ExecutionResult>
-    findByApplicationId(
-            Long applicationId);
+            findByApplicationId(
+                    Long applicationId);
 
     /**
-     * Último resultado conocido
-     * para una aplicación.
+     * Último resultado conocido para una aplicación.
      */
     ExecutionResult
-    findFirstByApplicationIdOrderByIdDesc(
-            Long applicationId);
+            findFirstByApplicationIdOrderByIdDesc(
+                    Long applicationId);
 
     /**
-     * Últimos 50 resultados
-     * para score y tendencias.
+     * Últimos 50 resultados para score y tendencias.
      */
     List<ExecutionResult>
-    findTop50ByApplicationIdOrderByIdDesc(
-            Long applicationId);
+            findTop50ByApplicationIdOrderByIdDesc(
+                    Long applicationId);
 
     long countByApplicationId(
             Long applicationId);
+
+    /**
+     * Rendimiento.
+     */
+    List<ExecutionResult>
+            findTop5ByOrderByResponseTimeMsAsc();
+
+    List<ExecutionResult>
+            findTop5ByOrderByResponseTimeMsDesc();
+
+    /**
+     * Confiabilidad.
+     */
+    List<ExecutionResult>
+            findTop5ByStatusOrderByResponseTimeMsAsc(
+                    String status);
 }

@@ -14,10 +14,10 @@
 
     <hr>
 
-    <h2>Dashboard Health</h2>
+    <h2>Estado General</h2>
 
     <p>
-        Aplicaciones registradas:
+        Aplicaciones monitoreadas:
         <strong th:text="${dashboardHealth.applicationsCount}"></strong>
     </p>
 
@@ -36,44 +36,80 @@
         <strong th:text="${dashboardHealth.unknownApplications}"></strong>
     </p>
 
-    <hr>
-
     <p>
         Health Global:
         <strong th:text="${dashboardHealth.averageHealthScore}"></strong>
         / 100
     </p>
 
+    <hr>
+
+    <h2>Estado de Aplicaciones</h2>
+
     <p>
-        Healthy:
+        Aplicaciones Saludables:
         <strong th:text="${dashboardHealth.healthyCount}"></strong>
     </p>
 
     <p>
-        Degraded:
+        Aplicaciones Degradadas:
         <strong th:text="${dashboardHealth.degradedCount}"></strong>
     </p>
 
     <p>
-        Critical:
+        Aplicaciones Críticas:
         <strong th:text="${dashboardHealth.criticalCount}"></strong>
     </p>
 
     <hr>
 
-    <p>
-        Mejor Score:
-        <strong th:text="${dashboardHealth.bestHealthScore}"></strong>
-        -
-        <strong th:text="${dashboardHealth.bestApplicationName}"></strong>
-    </p>
+    <h2>Confiabilidad</h2>
 
-    <p>
-        Peor Score:
-        <strong th:text="${dashboardHealth.worstHealthScore}"></strong>
-        -
-        <strong th:text="${dashboardHealth.worstApplicationName}"></strong>
-    </p>
+    <h3>Top 5 Mejor Score</h3>
+
+    <ol>
+        <li th:each="app : ${dashboardHealth.top5BestScore}">
+            <strong th:text="${app.applicationName}"></strong>
+            -
+            <span th:text="${app.healthScore}"></span>
+        </li>
+    </ol>
+
+    <h3>Top 5 Peor Score</h3>
+
+    <ol>
+        <li th:each="app : ${dashboardHealth.top5WorstScore}">
+            <strong th:text="${app.applicationName}"></strong>
+            -
+            <span th:text="${app.healthScore}"></span>
+        </li>
+    </ol>
+
+    <hr>
+
+    <h2>Rendimiento</h2>
+
+    <h3>Top 5 Mejor Rendimiento</h3>
+
+    <ol>
+        <li th:each="app : ${dashboardHealth.top5BestPerformance}">
+            <strong th:text="${app.applicationName}"></strong>
+            -
+            <span th:text="${app.lastResponseTime}"></span>
+            ms
+        </li>
+    </ol>
+
+    <h3>Top 5 Peor Rendimiento</h3>
+
+    <ol>
+        <li th:each="app : ${dashboardHealth.top5WorstPerformance}">
+            <strong th:text="${app.applicationName}"></strong>
+            -
+            <span th:text="${app.lastResponseTime}"></span>
+            ms
+        </li>
+    </ol>
 
     <hr>
 

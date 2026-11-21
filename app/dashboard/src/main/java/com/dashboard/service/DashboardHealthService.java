@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -21,11 +22,11 @@ public class DashboardHealthService {
 
     public DashboardHealthDTO buildDashboard() {
 
-        List<Application> applications =
-                applicationService.findAll();
+        List<Application> applications
+                = applicationService.findAll();
 
-        List<ApplicationHealthDTO> applicationCards =
-                new ArrayList<>();
+        List<ApplicationHealthDTO> applicationCards
+                = new ArrayList<>();
 
         int activeApplications = 0;
         int inactiveApplications = 0;
@@ -46,8 +47,8 @@ public class DashboardHealthService {
 
         for (Application application : applications) {
 
-            ApplicationHealthDTO health =
-                    applicationHealthService
+            ApplicationHealthDTO health
+                    = applicationHealthService
                             .buildHealth(
                                     application.getId());
 
@@ -69,8 +70,8 @@ public class DashboardHealthService {
                 continue;
             }
 
-            int score =
-                    health.getHealthScore();
+            int score
+                    = health.getHealthScore();
 
             evaluatedApplications++;
 
@@ -80,16 +81,16 @@ public class DashboardHealthService {
 
                 bestScore = score;
 
-                bestApplicationName =
-                        health.getApplicationName();
+                bestApplicationName
+                        = health.getApplicationName();
             }
 
             if (score < worstScore) {
 
                 worstScore = score;
 
-                worstApplicationName =
-                        health.getApplicationName();
+                worstApplicationName
+                        = health.getApplicationName();
             }
 
             if (score >= 80) {
@@ -110,13 +111,63 @@ public class DashboardHealthService {
 
         if (evaluatedApplications > 0) {
 
-            averageScore =
-                    totalScore / evaluatedApplications;
+            averageScore
+                    = totalScore / evaluatedApplications;
 
         } else {
 
             worstScore = 0;
         }
+
+        List<ApplicationHealthDTO> top5BestScore
+                = applicationCards
+                        .stream()
+                        .filter(app
+                                -> app.getTotalExecutions() > 0)
+                        .sorted(
+                                Comparator.comparingInt(
+                                        ApplicationHealthDTO::getHealthScore)
+                                        .reversed())
+                        .limit(5)
+                        .toList();
+
+        List<ApplicationHealthDTO> top5WorstScore
+                = applicationCards
+                        .stream()
+                        .filter(app
+                                -> app.getTotalExecutions() > 0)
+                        .sorted(
+                                Comparator.comparingInt(
+                                        ApplicationHealthDTO::getHealthScore))
+                        .limit(5)
+                        .toList();
+
+        List<ApplicationHealthDTO> top5BestPerformance
+                = applicationCards
+                        .stream()
+                        .filter(app
+                                -> app.getTotalExecutions() > 0)
+                        .filter(app
+                                -> app.getLastResponseTime() != null)
+                        .sorted(
+                                Comparator.comparingInt(
+                                        ApplicationHealthDTO::getLastResponseTime))
+                        .limit(5)
+                        .toList();
+
+        List<ApplicationHealthDTO> top5WorstPerformance
+                = applicationCards
+                        .stream()
+                        .filter(app
+                                -> app.getTotalExecutions() > 0)
+                        .filter(app
+                                -> app.getLastResponseTime() != null)
+                        .sorted(
+                                Comparator.comparingInt(
+                                        ApplicationHealthDTO::getLastResponseTime)
+                                        .reversed())
+                        .limit(5)
+                        .toList();
 
         return DashboardHealthDTO.builder()
                 .applicationsCount(
@@ -145,6 +196,14 @@ public class DashboardHealthService {
                         worstApplicationName)
                 .applications(
                         applicationCards)
+                .top5BestScore(
+                        top5BestScore)
+                .top5WorstScore(
+                        top5WorstScore)
+                .top5BestPerformance(
+                        top5BestPerformance)
+                .top5WorstPerformance(
+                        top5WorstPerformance)
                 .build();
     }
 }
