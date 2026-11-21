@@ -12,37 +12,61 @@
 
     <h1>Ejecuciones</h1>
 
-    <form method="get" th:action="@{/executions}">
+    <form id="filterForm" method="get" th:action="@{/executions}">
+
+        Estado:
+
+        <select name="status" onchange="this.form.page.value=0; this.form.submit()">
+
+            <option value="" th:selected="${status == null}">
+                Todos
+            </option>
+
+            <option value="OK" th:selected="${status != null && status.name() == 'OK'}">
+                OK
+            </option>
+
+            <option value="WARNING" th:selected="${status != null && status.name() == 'WARNING'}">
+                WARNING
+            </option>
+
+            <option value="ERROR" th:selected="${status != null && status.name() == 'ERROR'}">
+                ERROR
+            </option>
+
+            <option value="DEGRADED" th:selected="${status != null && status.name() == 'DEGRADED'}">
+                DEGRADED
+            </option>
+
+        </select>
 
         Mostrar:
 
-        <select name="size" onchange="this.form.submit()">
+        <select name="size" onchange="this.form.page.value=0; this.form.submit()">
 
-            <option value="10"
-                    th:selected="${pageSize == 10}">
+            <option value="10" th:selected="${pageSize == 10}">
                 10
             </option>
 
-            <option value="20"
-                    th:selected="${pageSize == 20}">
+            <option value="20" th:selected="${pageSize == 20}">
                 20
             </option>
 
-            <option value="50"
-                    th:selected="${pageSize == 50}">
+            <option value="50" th:selected="${pageSize == 50}">
                 50
             </option>
 
-            <option value="100"
-                    th:selected="${pageSize == 100}">
+            <option value="100" th:selected="${pageSize == 100}">
                 100
             </option>
 
         </select>
 
-        <input type="hidden"
-               name="page"
-               th:value="${currentPage}">
+        <input type="hidden" name="page" th:value="${currentPage}">
+
+        <button type="button" onclick="window.location='/executions'">
+            Limpiar filtros
+        </button>
 
     </form>
 
@@ -98,15 +122,21 @@
 
     <div>
 
-        <a th:if="${currentPage > 0}"
-           th:href="@{/executions(page=${currentPage - 1},size=${pageSize})}">
+        <a th:if="${currentPage > 0}" th:href="@{/executions(
+                page=${currentPage - 1},
+                size=${pageSize},
+                status=${status}
+           )}">
             ← Anterior
         </a>
 
         &nbsp;
 
-        <a th:if="${currentPage + 1 < totalPages}"
-           th:href="@{/executions(page=${currentPage + 1},size=${pageSize})}">
+        <a th:if="${currentPage + 1 < totalPages}" th:href="@{/executions(
+                page=${currentPage + 1},
+                size=${pageSize},
+                status=${status}
+           )}">
             Siguiente →
         </a>
 

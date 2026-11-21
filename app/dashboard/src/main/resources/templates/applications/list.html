@@ -24,34 +24,62 @@
 
     <hr>
 
-    <form method="get" th:action="@{/applications}">
+    <form id="filterForm" method="get" th:action="@{/applications}">
+
+        Nombre:
+
+        <input type="text" name="search" th:value="${search}">
+
+        Estado:
+
+        <select name="activo" onchange="this.form.page.value=0; this.form.submit()">
+
+            <option value="" th:selected="${activo == null}">
+                Todos
+            </option>
+
+            <option value="true" th:selected="${activo == true}">
+                Activos
+            </option>
+
+            <option value="false" th:selected="${activo == false}">
+                Inactivos
+            </option>
+
+        </select>
+
         Mostrar:
 
-        <select name="size" onchange="this.form.submit()">
-            <option value="10"
-                    th:selected="${pageSize == 10}">
+        <select name="size" onchange="this.form.page.value=0; this.form.submit()">
+
+            <option value="10" th:selected="${pageSize == 10}">
                 10
             </option>
 
-            <option value="20"
-                    th:selected="${pageSize == 20}">
+            <option value="20" th:selected="${pageSize == 20}">
                 20
             </option>
 
-            <option value="50"
-                    th:selected="${pageSize == 50}">
+            <option value="50" th:selected="${pageSize == 50}">
                 50
             </option>
 
-            <option value="100"
-                    th:selected="${pageSize == 100}">
+            <option value="100" th:selected="${pageSize == 100}">
                 100
             </option>
+
         </select>
 
-        <input type="hidden"
-               name="page"
-               th:value="${currentPage}">
+        <input type="hidden" name="page" th:value="${currentPage}">
+
+        <button type="submit">
+            Filtrar
+        </button>
+
+        <button type="button" onclick="window.location='/applications'">
+            Limpiar filtros
+        </button>
+
     </form>
 
     <br>
@@ -89,13 +117,10 @@
 
                 |
 
-                <form th:action="@{/applications/deactivate/{id}(id=${app.id})}"
-                      method="post"
-                      style="display:inline;"
-                      th:if="${app.activo}">
+                <form th:action="@{/applications/deactivate/{id}(id=${app.id})}" method="post" style="display:inline;"
+                    th:if="${app.activo}">
 
-                    <button type="submit"
-                            onclick="return confirm('¿Desactivar esta aplicación?');">
+                    <button type="submit" onclick="return confirm('¿Desactivar esta aplicación?');">
                         Desactivar
                     </button>
 
@@ -122,15 +147,23 @@
 
     <div>
 
-        <a th:if="${currentPage > 0}"
-           th:href="@{/applications(page=${currentPage - 1},size=${pageSize})}">
+        <a th:if="${currentPage > 0}" th:href="@{/applications(
+                page=${currentPage - 1},
+                size=${pageSize},
+                search=${search},
+                activo=${activo}
+           )}">
             ← Anterior
         </a>
 
         &nbsp;
 
-        <a th:if="${currentPage + 1 < totalPages}"
-           th:href="@{/applications(page=${currentPage + 1},size=${pageSize})}">
+        <a th:if="${currentPage + 1 < totalPages}" th:href="@{/applications(
+                page=${currentPage + 1},
+                size=${pageSize},
+                search=${search},
+                activo=${activo}
+           )}">
             Siguiente →
         </a>
 

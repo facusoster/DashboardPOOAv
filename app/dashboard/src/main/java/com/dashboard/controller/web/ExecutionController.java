@@ -1,6 +1,7 @@
 package com.dashboard.controller.web;
 
 import com.dashboard.model.Execution;
+import com.dashboard.model.ExecutionStatus;
 import com.dashboard.service.ExecutionService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,15 +24,18 @@ public class ExecutionController {
 
     @GetMapping
     public String list(
+            @RequestParam(required = false) ExecutionStatus status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             Model model) {
 
-        Pageable pageable =
-                PageRequest.of(page, size);
+        Pageable pageable
+                = PageRequest.of(page, size);
 
-        Page<Execution> executions =
-                executionService.findAll(pageable);
+        Page<Execution> executions
+                = executionService.findFiltered(
+                        status,
+                        pageable);
 
         model.addAttribute(
                 "executions",
@@ -48,6 +52,10 @@ public class ExecutionController {
         model.addAttribute(
                 "pageSize",
                 size);
+
+        model.addAttribute(
+                "status",
+                status);
 
         return "executions/list";
     }

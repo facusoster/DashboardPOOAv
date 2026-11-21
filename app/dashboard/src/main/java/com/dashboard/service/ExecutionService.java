@@ -35,8 +35,16 @@ public class ExecutionService {
     /**
      * Nuevo método para paginación.
      */
-    public Page<Execution> findAll(
+    public Page<Execution> findFiltered(
+            ExecutionStatus status,
             Pageable pageable) {
+
+        if (status != null) {
+
+            return repository.findByStatus(
+                    status,
+                    pageable);
+        }
 
         return repository.findAll(pageable);
     }

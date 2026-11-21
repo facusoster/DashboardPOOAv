@@ -28,15 +28,20 @@ public class ApplicationController {
 
     @GetMapping
     public String list(
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(required = false) Boolean activo,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             Model model) {
 
-        Pageable pageable =
-                PageRequest.of(page, size);
+        Pageable pageable
+                = PageRequest.of(page, size);
 
-        Page<Application> applications =
-                service.findAll(pageable);
+        Page<Application> applications
+                = service.findFiltered(
+                        search,
+                        activo,
+                        pageable);
 
         model.addAttribute(
                 "applications",
@@ -53,6 +58,14 @@ public class ApplicationController {
         model.addAttribute(
                 "pageSize",
                 size);
+
+        model.addAttribute(
+                "search",
+                search);
+
+        model.addAttribute(
+                "activo",
+                activo);
 
         return "applications/list";
     }
@@ -84,11 +97,11 @@ public class ApplicationController {
             @PathVariable Long id,
             Model model) {
 
-        Application application =
-                service.findById(id);
+        Application application
+                = service.findById(id);
 
-        ApplicationHealthDTO health =
-                applicationHealthService
+        ApplicationHealthDTO health
+                = applicationHealthService
                         .buildHealth(id);
 
         model.addAttribute(

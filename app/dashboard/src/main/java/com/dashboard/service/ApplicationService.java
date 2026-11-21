@@ -27,29 +27,81 @@ public class ApplicationService {
         return repository.findAll(pageable);
     }
 
-    public Application save(Application application) {
+    public Page<Application> findFiltered(
+            String search,
+            Boolean activo,
+            Pageable pageable) {
+
+        boolean hasSearch
+                = search != null
+                && !search.isBlank();
+
+        boolean hasActivo
+                = activo != null;
+
+        if (hasSearch && hasActivo) {
+
+            return repository
+                    .findByNombreContainingIgnoreCaseAndActivo(
+                            search,
+                            activo,
+                            pageable);
+        }
+
+        if (hasSearch) {
+
+            return repository
+                    .findByNombreContainingIgnoreCase(
+                            search,
+                            pageable);
+        }
+
+        if (hasActivo) {
+
+            return repository
+                    .findByActivo(
+                            activo,
+                            pageable);
+        }
+
+        return repository.findAll(pageable);
+    }
+
+    public Application save(
+            Application application) {
+
         return repository.save(application);
     }
 
-    public Application findById(Long id) {
+    public Application findById(
+            Long id) {
+
         return repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException(
+                .orElseThrow(()
+                        -> new RuntimeException(
                                 "No se encontró la aplicación con ID: " + id));
     }
 
-    public Application findByExternalId(String externalId) {
+    public Application findByExternalId(
+            String externalId) {
+
         return repository.findByExternalId(externalId)
                 .orElse(null);
     }
 
-    public void deactivate(Long id) {
-        Application application = findById(id);
+    public void deactivate(
+            Long id) {
+
+        Application application
+                = findById(id);
+
         application.setActivo(false);
+
         repository.save(application);
     }
 
     public long count() {
+
         return repository.count();
     }
 }
